@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What are you thinking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <style>
+        h1 {
+            font-family: "Roboto Mono", monospace;
+            font-size:80px;
+            text-align:center;
+        }
+        body {
+            text-align: center;
+        }
+        label {
+            text-align:left;
+        }
+        p {
+            margin:10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Say what is on your mind</h1>
+    <div>
+        <form action="submit" method="post">
+            <label for="name">Displayname: </label> <br>
+            <input type="text" id="name" name="name" required> <br>
+            <label for="comment">Your Thoughts:</label> <br>
+            <textarea id="comment" name="comment" rows="8" cols="80" required></textarea>
+            <input type="submit" value="Submit">
+        </form>
+    </div> <br><br>
+    <div style="width:75%;border:solid 1px; margin: 0 auto;">
+        {% for comment in comments %}
+            <div style="border:solid 1px">
+                <div>
+                    <p style="text-align:left;">
+                        Author: {{comment["author"]}}
+                        <span style="float:right;">
+                            Submitted: {{comment["time"]}}
+                        </span>
+                    </p>
+                </div>
+                <p>{{comment["comment"]}}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
