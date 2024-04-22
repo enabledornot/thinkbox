@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  database:
+    image: 'postgres:latest'
+    ports:
+      - 5432:5432
+
+    environment:
+      POSTGRES_USER: think 
+      POSTGRES_PASSWORD: ehGzT3Pr 
+      POSTGRES_DB: thinkbox
+    volumes:
+          - ./db-data/:/var/lib/postgresql/data/
+ 

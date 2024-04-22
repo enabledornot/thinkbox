@@ -1,0 +1,6 @@
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    author VARCHAR(32) NOT NULL,
+    time TIMESTAMP,
+    text VARCHAR(8192) NOT NULL
+)

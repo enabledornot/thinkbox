@@ -39,14 +39,14 @@
         {% for comment in comments %}
             <div style="border:solid 1px">
                 <div>
-                    <p style="text-align:left;">
-                        Author: {{comment["author"]}}
+                    <p style="text-align:left;font-size:24px">
+                        <b>{{comment["author"]}} </b>
                         <span style="float:right;">
-                            Submitted: {{comment["time"]}}
+                            <b>{{comment["time"]}} </b>
                         </span>
                     </p>
-                </div>
-                <p>{{comment["comment"]}}</p>
+                </div> <br>
+                <p style="text-align: left;">{{comment["comment"]}}</p>
             </div>
         {% endfor %}
     </div>
