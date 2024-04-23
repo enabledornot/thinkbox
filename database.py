@@ -42,3 +42,4 @@ class database:
             cursor.execute(command,(author,body))
         conn.commit()
         self.pool.putconn(conn)
+db = database("database.config")
