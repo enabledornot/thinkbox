@@ -4,28 +4,26 @@ services:
   thinkbox:
     image: 'thinkbox'
     ports:
-      - 8080:8000
+      - 8000:8000
     volumes:
-      - ./database.config:/thinkbox/database.config
+      - ./.env:/thinkbox/.env
     depends_on:
       database:
         condition: service_healthy
   database:
     image: 'postgres:latest'
     ports:
-      - 5432:5432
-
-    environment:
-      POSTGRES_USER: think 
-      POSTGRES_PASSWORD: ehGzT3Pr # this password is not used in production
-      POSTGRES_DB: thinkbox
+      - 15432:5432
+    env_file:
+      - .env
     volumes:
-          - ./db-data/:/var/lib/postgresql/data/
+      - type: volume
+        source: thinkbox_database
+        target: /var/lib/postgresql/data/
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-d", "thinkbox"]
-      interval: 30s
-      timeout: 60s
-      retries: 5
-      start_period: 80s
- 
- 
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+volumes:
+  thinkbox_database:

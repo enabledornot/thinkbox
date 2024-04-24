@@ -15,9 +15,10 @@ def submit():
     db.add_comment(data["name"],data["comment"])
     return redirect(url_for('index'))
 
+try:
+    db.init_db()
+except:
+    print('database already init')
+
 if __name__ == '__main__':
-    try:
-        db.init_db()
-    except:
-        print('database already init')
     app.run(debug=True,port=5001)

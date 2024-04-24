@@ -10,4 +10,4 @@ COPY init.sql init.sql
 COPY static static
 COPY templates templates
 
-CMD [ "gunicorn", "app:app"]
+CMD [ "gunicorn", "-b" , "0.0.0.0:8000" ,"app:app"]

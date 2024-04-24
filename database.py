@@ -1,17 +1,22 @@
 import psycopg2.pool
-import json
+
 
 class database:
     def __init__(self,cred_file):
         with open(cred_file,"r") as f:
-            cred = json.load(f)
+            data = f.read().split("\n")
+        cred = {}
+        for line in data:
+            split = line.split("=")
+            cred[split[0]] = split[1]
+        print(cred)
         self.pool = psycopg2.pool.ThreadedConnectionPool(
             minconn=1,
             maxconn=5,
-            host=cred["host"],
-            database=cred["database"],
-            user=cred["user"],
-            password=cred["password"]
+            host=cred["POSTGRES_HOST"],
+            database=cred["POSTGRES_DB"],
+            user=cred["POSTGRES_USER"],
+            password=cred["POSTGRES_PASSWORD"]
         )
     def init_db(self):
         with open("init.sql","r") as f:
@@ -19,6 +24,7 @@ class database:
         conn = self.pool.getconn()
         with conn.cursor() as cursor:
             cursor.execute(init_command)
+        conn.commit()
         self.pool.putconn(conn)
     def get_comments(self):
         conn = self.pool.getconn()
@@ -42,4 +48,4 @@ class database:
             cursor.execute(command,(author,body))
         conn.commit()
         self.pool.putconn(conn)
-db = database("database.config")
+db = database(".env")
