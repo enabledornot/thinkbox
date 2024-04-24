@@ -16,7 +16,8 @@ class database:
             host=cred["POSTGRES_HOST"],
             database=cred["POSTGRES_DB"],
             user=cred["POSTGRES_USER"],
-            password=cred["POSTGRES_PASSWORD"]
+            password=cred["POSTGRES_PASSWORD"],
+            port=cred["PORT"]
         )
     def init_db(self):
         with open("init.sql","r") as f:
@@ -29,6 +30,8 @@ class database:
     def get_comments(self):
         conn = self.pool.getconn()
         with conn.cursor() as cursor:
+            command_tz = "set timezone TO 'EST'"
+            cursor.execute(command_tz)
             command = "SELECT author,time,text FROM comments ORDER BY time DESC"
             cursor.execute(command)
             rows = cursor.fetchall()
@@ -44,6 +47,8 @@ class database:
     def add_comment(self,author,body):
         conn = self.pool.getconn()
         with conn.cursor() as cursor:
+            command_tz = "set timezone TO 'EST'"
+            cursor.execute(command_tz)
             command = "INSERT INTO comments (author, time, text) VALUES (%s, CURRENT_TIMESTAMP, %s)"
             cursor.execute(command,(author,body))
         conn.commit()
