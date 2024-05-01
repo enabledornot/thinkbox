@@ -44,13 +44,24 @@ class database:
                 "comment":row[2]
             })
         return comments
-    def add_comment(self,author,body):
+    def add_comment(self,author,body,session,useragent):
         conn = self.pool.getconn()
         with conn.cursor() as cursor:
             command_tz = "set timezone TO '{}'".format(self.config["TZ"])
             cursor.execute(command_tz)
-            command = "INSERT INTO comments (author, time, text) VALUES (%s, CURRENT_TIMESTAMP, %s)"
-            cursor.execute(command,(author,body))
+            command = "INSERT INTO comments (author, time, text, s_id, user_agent) VALUES (%s, CURRENT_TIMESTAMP, %s, %s, %s)"
+            cursor.execute(command,(author,body,session,useragent))
         conn.commit()
         self.pool.putconn(conn)
+    def get_new_session(self):
+        conn = self.pool.getconn()
+        with conn.cursor() as cursor:
+            command_tz = "set timezone TO '{}'".format(self.config["TZ"])
+            cursor.execute(command_tz)
+            command = "INSERT INTO sessions (s_id, create_date) VALUES (uuid_generate_v4(), CURRENT_TIMESTAMP) RETURNING s_id"
+            cursor.execute(command)
+            s_id = cursor.fetchall()[0][0]
+        conn.commit()
+        self.pool.putconn(conn)
+        return s_id
 db = database(".env")

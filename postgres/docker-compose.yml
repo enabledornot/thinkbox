@@ -2,7 +2,7 @@ version: '3'
 
 services:
   database:
-    image: 'postgres:latest'
+    image: 'postgres-think'
     ports:
       - 5432:5432
 
