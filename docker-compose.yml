@@ -4,16 +4,16 @@ services:
   thinkbox:
     image: 'thinkbox'
     ports:
-      - 8000:8000
+      - 127.0.0.1:8000:8000
     volumes:
       - ./.env:/thinkbox/.env
     depends_on:
       database:
         condition: service_healthy
   database:
-    image: 'postgres:latest'
+    image: 'postgres-think'
     ports:
-      - 15432:5432
+      - 127.0.0.1:15432:5432
     env_file:
       - .env
     volumes:
