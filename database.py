@@ -9,7 +9,7 @@ class database:
         for line in data:
             split = line.split("=")
             cred[split[0]] = split[1]
-        print(cred)
+        self.config = cred
         self.pool = psycopg2.pool.ThreadedConnectionPool(
             minconn=1,
             maxconn=5,
@@ -30,7 +30,7 @@ class database:
     def get_comments(self):
         conn = self.pool.getconn()
         with conn.cursor() as cursor:
-            command_tz = "set timezone TO 'EST'"
+            command_tz = "set timezone TO '{}'".format(self.config["TZ"])
             cursor.execute(command_tz)
             command = "SELECT author,time,text FROM comments ORDER BY time DESC"
             cursor.execute(command)
@@ -47,7 +47,7 @@ class database:
     def add_comment(self,author,body):
         conn = self.pool.getconn()
         with conn.cursor() as cursor:
-            command_tz = "set timezone TO 'EST'"
+            command_tz = "set timezone TO '{}'".format(self.config["TZ"])
             cursor.execute(command_tz)
             command = "INSERT INTO comments (author, time, text) VALUES (%s, CURRENT_TIMESTAMP, %s)"
             cursor.execute(command,(author,body))
