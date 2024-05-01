@@ -50,7 +50,10 @@ class database:
             command_tz = "set timezone TO '{}'".format(self.config["TZ"])
             cursor.execute(command_tz)
             command = "INSERT INTO comments (author, time, text, s_id, user_agent) VALUES (%s, CURRENT_TIMESTAMP, %s, %s, %s)"
-            cursor.execute(command,(author,body,session,useragent))
+            try:
+                cursor.execute(command,(author,body,session,useragent))
+            except:
+                pass
         conn.commit()
         self.pool.putconn(conn)
     def get_new_session(self):
