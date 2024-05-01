@@ -7,8 +7,9 @@ class database:
             data = f.read().split("\n")
         cred = {}
         for line in data:
-            split = line.split("=")
-            cred[split[0]] = split[1]
+            if line != "":
+                split = line.split("=")
+                cred[split[0]] = split[1]
         self.config = cred
         self.pool = psycopg2.pool.ThreadedConnectionPool(
             minconn=1,
